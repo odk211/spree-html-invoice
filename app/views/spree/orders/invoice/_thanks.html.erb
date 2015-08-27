@@ -1,0 +1,29 @@
+<%
+   base = @order.number[1 .. -1]
+   viite = "Viite"
+%>
+
+<table>
+  <tr>
+    <td colspan="2">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      Order: <%= viite %>
+    </td>
+  </tr>
+</table>
+
+<table class="thanks_table">
+  <tr>
+    <td class="cell" cellspan="2"></td>
+    <td class="cell">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="thanks cell" cellspan="2"><%= Spree.t(:"invoice.thanks", order: @order) %> </td>
+    <td class="cell">&nbsp;</td>
+  </tr>
+</table>
+

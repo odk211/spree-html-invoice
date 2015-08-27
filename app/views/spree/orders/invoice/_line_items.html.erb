@@ -1,0 +1,34 @@
+<table class="line_items">
+  <colgroup>
+    <col/>
+    <col/>
+    <col class="price"/>
+    <col class="qty"/>
+    <col class="total"/>
+  </colgroup>
+  <tr>
+    <td class="sku bold"><%= Spree.t(:sku) %></td>
+    <td class="desc bold"><%= Spree.t(:item) %></td>
+    <td class="price bold"><%= Spree.t(:price) %></td>
+    <td class="qty bold"><%= Spree.t(:qty) %> </td>
+    <td class="total bold"><%= Spree.t(:total) %></td>
+  </tr>
+  <% @order.line_items.each do |item| %>
+    <tr>
+      <td class="cell"><%= item.variant.sku %></td>
+      <td class="cell"><%= item.variant.name %></td>
+      <td class="cell price"><%= item.single_money.to_html %></td>
+      <td class="cell qty"><%= item.quantity %></td>
+      <td class="cell total"><%= item.display_amount.to_html %></td>
+    </tr>
+    <% if item.respond_to? :discount and item.discount > 0 %>
+      <tr>
+        <td class="cell">&nbsp;</td>
+        <td class="cell">(<%= t(:discount) %>)</td>
+        <td class="cell price">-<%= item.single_money %></td>
+        <td class="cell qty">&nbsp;</td>
+        <td class="cell total">-<%= item.display_amount.to_html %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

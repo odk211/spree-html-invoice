@@ -1,5 +1,3 @@
 Spree::Core::Engine.routes.append do
-  namespace :admin do
-    get 'invoice/:id(/:template)' => 'invoice#lasku'
-  end
+  get '/orders/:id/invoice', :to => 'orders#invoice', :as => :invoice_order
 end

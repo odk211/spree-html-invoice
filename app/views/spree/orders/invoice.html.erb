@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <%= stylesheet_link_tag "spree/html-invoice.css", :media => "all" %>
+  <title><%= Spree.t(:"invoice.header") %></title>
+</head>
+
+<body>
+<div class="a4">
+  <div id="header">
+    <%= render partial: "spree/orders/invoice/header" %>
+  </div>
+  <div class="address">
+    <%= render partial: "spree/orders/invoice/address" %>
+  </div>
+  <div class="wrapper">
+    <div class="line_items">
+      <%= render partial: "spree/orders/invoice/line_items" %>
+    </div>
+    <div class="thanks">
+      <%= render partial: "spree/orders/invoice/thanks" %>
+    </div>
+    <div class="spacer"> &nbsp;
+    </div>
+    <div class="totals">
+      <%= render partial: "spree/orders/invoice/totals" %>
+    </div>
+  </div>
+  <div class="footer">
+    <%= render partial: "spree/orders/invoice/footer" %>
+  </div>
+</div>
+</body>
+</html>
