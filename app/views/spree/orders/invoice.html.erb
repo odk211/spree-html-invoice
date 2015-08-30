@@ -8,24 +8,27 @@
 
 <body>
 <div class="a4">
-  <div id="header">
+  <div class="header">
     <%= render partial: "spree/orders/invoice/header" %>
   </div>
   <div class="address">
     <%= render partial: "spree/orders/invoice/address" %>
   </div>
+  <div class="thanks">
+    <%= render partial: "spree/orders/invoice/thanks" %>
+  </div>
   <div class="wrapper">
     <div class="line_items">
       <%= render partial: "spree/orders/invoice/line_items" %>
-    </div>
-    <div class="thanks">
-      <%= render partial: "spree/orders/invoice/thanks" %>
     </div>
     <div class="spacer"> &nbsp;
     </div>
     <div class="totals">
       <%= render partial: "spree/orders/invoice/totals" %>
     </div>
+  </div>
+  <div class="remarks">
+    <%= render partial: "spree/orders/invoice/remarks" %>
   </div>
   <div class="footer">
     <%= render partial: "spree/orders/invoice/footer" %>

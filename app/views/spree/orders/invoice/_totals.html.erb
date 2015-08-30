@@ -1,44 +1,48 @@
 <table class="totals">
-  <% order_mrp_total = @order.line_items.map { |i| i.price * i.quantity }.sum %>
-  <% if (order_mrp_total - @order.item_total).round(2) != 0 %>
-    <tr>
-      <td class="cel1 bold"><%= Spree.t(:mrp_total) %>:</td>
-      <td class="cel2 bold cell" align="right"><%= number_to_currency order_mrp_total %></td>
-    </tr>
-    <% if (@order.item_total - order_mrp_total).round(2) > 0 %>
-      <tr>
-        <td class="cel1 bold"><%= Spree.t(:discount_total) %>:</td>
-        <td class="cel2 cell" align="right"><%= number_to_currency(@order.item_total - order_mrp_total) %></td>
-      </tr>
-    <% end %>
-  <% end %>
   <tr>
     <td class="cel1 bold"><%= Spree.t(:item_total) %>:</td>
-    <td class="cel2 bold cell" align="right"><%= number_to_currency @order.item_total %></td>
+    <td class="cel2 cell" align="right"><%= Spree::Money.new(@order.item_total, currency: @order.currency).to_html %></td>
   </tr>
-  <% @order.adjustments.eligible.where('amount>?',0).each do |adjustment| %>
+  <% @order.adjustments.eligible.where('amount>?', 0).each do |adjustment| %>
     <tr>
       <td class="cel1 bold"><%= adjustment.label %>:</td>
-      <td class="cel2 cell" align="right"><%= number_to_currency adjustment.amount %></td>
+      <td class="cel2 cell" align="right"><%= Spree::Money.new(adjustment.amount, currency: @order.currency).to_html %></td>
     </tr>
+  <% end %>
+
+  <% if @order.line_item_adjustments.exists? %>
+    <% if @order.line_item_adjustments.promotion.eligible.exists? %>
+      <% @order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+        <tr>
+          <td class="cel1 bold"><%= Spree.t(:promotion) %>: <%= label %></td>
+          <td class="cel2 cell" align="right"><%= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency).to_html %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% @order.shipments.group_by { |s| s.selected_shipping_rate.name }.each do |name, shipments| %>
+    <tr>
+      <td class="cel1 bold"><%= Spree.t(:shipping) %>: <strong><%= name %></strong></td>
+      <td class="cel2 cell" align="right"><%= Spree::Money.new(shipments.sum(&:discounted_cost), currency: @order.currency).to_html %></td>
+    </tr>
+  <% end %>
+
+  <% if @order.all_adjustments.tax.exists? %>
+    <% @order.all_adjustments.tax.group_by(&:label).each do |label, adjustments| %>
+      <tr class="total">
+        <td class="cel1 bold"><%= Spree.t(:tax) %>: <%= label %></td>
+        <td class="cel2 cell" align="right">
+          <%= Spree::Money.new(adjustments.sum(&:amount), currency: @order.currency) %>
+        </td>
+      </tr>
+    <% end %>
   <% end %>
 
   <tr>
     <td class="cel1 bold"><strong><%= Spree.t(:order_total) %>:</strong></td>
     <td class="cel2 cell" align="right">
-      <strong><span id='summary-order-total'><%= number_to_currency @order.total %></span></strong></td>
+      <strong><span id='summary-order-total'><%= Spree::Money.new(@order.total, currency: @order.currency).to_html %></span></strong>
+    </td>
   </tr>
-  <% if @order.adjustments.eligible.present? %>
-    <tr>
-      <td class="cel1"></td>
-      <td class="cel2"></td>
-    </tr>
-    <% @order.adjustments.eligible.each do |adjustment| %>
-      <% next if (adjustment.source_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
-      <tr class="total">
-        <td class="cel1 bold"><strong><%= adjustment.label %></strong></td>
-        <td class="cel2 cell" align="right"><span><%= adjustment.display_amount.to_html %></span></td>
-      </tr>
-    <% end %>
-  <% end %>
 </table>

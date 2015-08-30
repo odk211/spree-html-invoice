@@ -1,8 +1,8 @@
 <table class="footer">
   <tr>
-    <td valign="top" class="cel1 bold"><%==Spree.t(:"invoice.footer_left")%></td>
-    <td valign="top" class="cel2 cell"><%==Spree.t(:"invoice.footer_left2")%></td>
-    <td valign="top" class="cel3 bold"><%==Spree.t(:"invoice.footer_right")%> </td>
-    <td valign="top" class="cel4 cell"><%==Spree.t(:"invoice.footer_right2")%></td>
+    <td valign="top" class="cel1 bold"><%= Spree.t(:"invoice.footer_left_html", html_safe: true) %></td>
+    <td valign="top" class="cel2 cell"><%= Spree.t(:"invoice.footer_left2_html", html_safe: true) %></td>
+    <td valign="top" class="cel3 bold"><%= Spree.t(:"invoice.footer_right_html", html_safe: true) %> </td>
+    <td valign="top" class="cel4 cell"><%= Spree.t(:"invoice.footer_right2_html", html_safe: true) %></td>
   </tr>
 </table>
